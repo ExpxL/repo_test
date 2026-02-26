@@ -1,0 +1,121 @@
+:root {
+  --primary: #2563eb;
+  --dark: #0b0f1a;
+  --light: #f8fafc;
+  --text: #1e293b;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  color: var(--text);
+  line-height: 1.6;
+}
+
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: auto;
+}
+
+/* Buttons */
+.btn {
+  padding: 12px 22px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all .3s ease;
+}
+
+.btn.primary {
+  background: linear-gradient(135deg, #2563eb, #3b82f6);
+  color: white;
+}
+
+.btn.secondary {
+  background: transparent;
+  border: 1px solid #cbd5e1;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+/* Navbar */
+.navbar {
+  padding: 20px 0;
+}
+
+.nav-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Hero */
+.hero {
+  padding: 100px 0 140px;
+  text-align: center;
+  position: relative;
+}
+
+.hero h1 {
+  font-size: 3rem;
+  max-width: 800px;
+  margin: auto;
+}
+
+.hero h1 span {
+  color: var(--primary);
+}
+
+.hero p {
+  margin: 20px auto;
+  max-width: 600px;
+  color: #475569;
+}
+
+/* Sections */
+section {
+  padding: 100px 0;
+}
+
+.dark {
+  background: var(--dark);
+  color: white;
+}
+
+/* Cards */
+.feature-card,
+.price-card,
+.testimonial-card,
+.faq-card {
+  background: white;
+  border-radius: 16px;
+  padding: 30px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+  transition: transform .3s;
+}
+
+.feature-card:hover,
+.price-card:hover {
+  transform: translateY(-6px);
+}
+
+.price-card.featured {
+  border: 2px solid var(--primary);
+  transform: scale(1.05);
+}
+
+/* Footer */
+.footer {
+  background: #020617;
+  color: #cbd5f5;
+  padding: 80px 0;
+}

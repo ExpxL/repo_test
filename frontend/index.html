@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CRM SaaS — The Ultimate Sales Assistant</title>
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      scroll-behavior: smooth;
+    }
+
+    .gradient-text {
+      background: linear-gradient(90deg, #2563eb, #60a5fa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .text-gradient {
+        --tw-text-opacity: 1;
+        color: #159AF6;
+
+        background-image: linear-gradient(
+            45deg,
+            #264EC1,
+            #6163FC 50%,
+            #556FFC 100%
+        );
+
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+
+        display: inline-block;
+    }
+
+
+    /* Scroll reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: all .8s cubic-bezier(.22,1,.36,1);
+    }
+    .reveal.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-left { transform: translateX(-32px); }
+    .reveal-right { transform: translateX(32px); }
+    .reveal.show.reveal-left,
+    .reveal.show.reveal-right {
+      transform: translateX(0);
+    }
+
+    .analytics-node {
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .analytics-node rect {
+    transition: stroke-width 0.35s ease, filter 0.35s ease;
+    }
+
+    .analytics-node .glow {
+    filter: blur(6px);
+    transition: opacity 0.35s ease;
+    }
+
+    .analytics-node:hover rect {
+    stroke-width: 3.5;
+    }
+
+    .analytics-node:hover .glow {
+    opacity: 0.7;
+    }
+
+    .analytics-node:hover rect:not(.glow) {
+        stroke-width: 3;
+    }
+
+    .analytics-node svg {
+    /* Transição suave de 0.3 segundos */
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    
+    /* ESTA É A PARTE MAIS IMPORTANTE: */
+    /* Força a origem da transformação para o centro do ícone, não do SVG pai */
+    transform-origin: 50% 50%;
+    transform-box: fill-box;
+    }
+
+    .analytics-node:hover svg {
+        transform: scale(1.6); /* Aumenta 30% */
+    }
+
+    .node-realtime svg    { transform-origin: 443px 347px; }
+    .node-insights svg    { transform-origin: 343px 457px; }
+    .node-alerts svg      { transform-origin: 143px 457px; }
+    .node-security svg    { transform-origin: 443px 147px; }
+    .node-performance svg { transform-origin: 243px 47px;  }
+    .node-growth svg      { transform-origin: 43px 247px;  }
+
+  </style>
+</head>
+
+<body class="bg-white text-slate-900 overflow-x-hidden">
+
+
+<!-- ================= Inicio dos Ícones ================= -->
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+    <defs>
+    <symbol id="icon-activity" viewBox="0 0 24 24" fill="none">
+        <path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"/>
+    </symbol>
+
+    <symbol id="icon-bar-chart" viewBox="0 0 24 24" fill="none">
+        <path d="M3 3v16a2 2 0 0 0 2 2h16"/>
+        <path d="M7 16h8"/>
+        <path d="M7 11h12"/>
+        <path d="M7 6h3"/>
+    </symbol>
+
+    <symbol id="icon-alert-circle" viewBox="0 0 24 24" fill="none">
+        <circle cx="12" cy="12" r="10"/>
+        <line x1="12" x2="12" y1="8" y2="12"/>
+        <line x1="12" x2="12.01" y1="16" y2="16"/>
+    </symbol>
+
+    <symbol id="icon-shield-check" viewBox="0 0 24 24" fill="none">
+        <path d="M20 13c0 5-4 8-8 9-4-1-8-4-8-9V5l8-3 8 3z"/>
+        <path d="m9 12 2 2 4-4"/>
+    </symbol>
+
+    <symbol id="icon-zap" viewBox="0 0 24 24" fill="none">
+        <path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/>
+    </symbol>
+
+    <symbol id="icon-trending-up" viewBox="0 0 24 24" fill="none">
+        <path d="M16 7h6v6"/>
+        <path d="m22 7-8.5 8.5-5-5L2 17"/>
+    </symbol>
+    </defs>
+</svg>
+
+<!-- ================= Fim dos Ícones ================= -->
+
+<!-- ================= NAVBAR ================= -->
+<nav class="fixed w-full z-50 bg-white/80 backdrop-blur-md border-b border-slate-100">
+  <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+    <div class="flex items-center gap-10">
+      <div class="flex items-center gap-2 font-bold text-xl">
+        <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+          <i data-lucide="layers" class="w-5 h-5 text-white"></i>
+        </div>
+        Folio
+      </div>
+      <div class="hidden md:flex gap-6 text-sm text-slate-600">
+        <a href="#">Products</a>
+        <a href="#">Solutions</a>
+        <a href="#">Resources</a>
+        <a href="#">Pricing</a>
+      </div>
+    </div>
+
+    <div class="flex gap-4">
+      <button class="text-sm text-slate-600">Login</button>
+      <button class="px-5 py-2.5 rounded-full bg-blue-600 text-white font-semibold hover:shadow-xl hover:shadow-blue-500/30 transition">
+        Try for free
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- ================= HERO ================= -->
+<section class="pt-40 pb-28 px-6">
+  <div class="max-w-4xl mx-auto text-center">
+    <h1 class="text-5xl md:text-7xl font-bold reveal">
+      The ultimate sales assistant,<br>
+      <span class="gradient-text">always ready.</span>
+    </h1>
+
+    <p class="mt-6 text-lg text-slate-500 reveal">
+      Streamline your sales process, enhance collaboration,
+      and close deals faster with a modern CRM.
+    </p>
+
+    <div class="mt-10 flex justify-center gap-4 reveal">
+      <button class="px-8 py-4 rounded-full bg-blue-600 text-white font-bold hover:shadow-xl transition">
+        Try for free
+      </button>
+      <button class="px-8 py-4 rounded-full border border-slate-200 font-bold">
+        Get a demo
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SOCIAL PROOF ================= -->
+<section class="pb-24 px-6">
+  <div class="max-w-4xl mx-auto text-center reveal">
+    <div class="mb-6">
+      ⭐⭐⭐⭐⭐ <strong>4.8</strong>
+      <span class="text-slate-400 text-sm">2,000+ Reviews</span>
+    </div>
+    <div class="flex justify-center gap-10 opacity-40 font-bold uppercase text-sm">
+      <span>Capterra</span>
+      <span>Gartner</span>
+      <span>GetApp</span>
+      <span>SourceForge</span>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FEATURES ================= -->
+<section class="py-24 px-6 bg-slate-50">
+  <div class="max-w-7xl mx-auto">
+    <h2 class="text-4xl font-bold text-center mb-16 reveal">
+      Finally, a CRM designed to
+      <span class="text-blue-600">simplify your workflow.</span>
+    </h2>
+
+    <div class="grid md:grid-cols-3 gap-8">
+      <div class="bg-white p-8 rounded-3xl shadow-sm reveal">
+        <i data-lucide="mouse-pointer-click" class="text-blue-600 mb-4"></i>
+        <h3 class="font-bold text-xl mb-2">Easy setup</h3>
+        <p class="text-slate-500">Get started in minutes.</p>
+      </div>
+
+      <div class="bg-white p-8 rounded-3xl shadow-sm reveal">
+        <i data-lucide="pie-chart" class="text-blue-600 mb-4"></i>
+        <h3 class="font-bold text-xl mb-2">Unified source</h3>
+        <p class="text-slate-500">All your data in one place.</p>
+      </div>
+
+      <div class="bg-white p-8 rounded-3xl shadow-sm reveal">
+        <i data-lucide="layout" class="text-blue-600 mb-4"></i>
+        <h3 class="font-bold text-xl mb-2">Built for teams</h3>
+        <p class="text-slate-500">Collaborate effortlessly.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= DARK INTEGRATIONS ================= -->
+<section class="py-28 px-6 bg-black text-white">
+  <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-16 items-center">
+    <div class="reveal-left reveal">
+      <h2 class="text-4xl font-bold mb-6">
+        Easily connects with your <br />
+        apps <span class="text-gradient">for a smooth experience.</span> <br />  
+      </h2>
+      <p class="text-slate-400 mb-8">
+        Effortlessly blending functionality and style, our solutions ensures a  <br />
+        seamless experience with modern design and
+        intuitive integration across platforms.
+      </p>
+      <button class="px-6 py-3 border rounded-full">
+        Learn more
+      </button>
+    </div>
+
+    <div class="reveal-right reveal flex justify-center">
+      <div class="w-72 h-72 border border-slate-800 rounded-full flex items-center justify-center">
+        <div class="w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center">
+          <i data-lucide="layers"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ANALYTICS ================= -->
+<section class="relative bg-black text-white py-32 overflow-hidden">
+  <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-20 items-center">
+
+    <!-- LEFT: SVG -->
+    <div class="flex justify-center reveal">
+      <div class="relative w-[420px] max-w-full">
+
+        <!-- SVG -->
+        <svg viewBox="0 0 487 504" class="w-full h-auto">
+
+        <defs>
+            <linearGradient id="g1" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#FF0099"/><stop offset="0.5" stop-color="#CC007A"/><stop offset="1" stop-color="#8000FF"/></linearGradient>
+            <linearGradient id="g2" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#00B3FF"/><stop offset="0.5" stop-color="#FF0099"/><stop offset="1" stop-color="#006B99"/></linearGradient>
+            <linearGradient id="g3" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#FF2A2A"/><stop offset="1" stop-color="#FF9900"/></linearGradient>
+            <linearGradient id="g4" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#00FF99"/><stop offset="1" stop-color="#8700EF"/></linearGradient>
+            <linearGradient id="g5" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#0C6DFF"/><stop offset="1" stop-color="#990707"/></linearGradient>
+            <linearGradient id="g6" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#FF0202"/><stop offset="1" stop-color="#4D9901"/></linearGradient>
+        </defs>
+
+        <rect x="201" y="301" width="85" height="193" rx="22" stroke="#333" fill="none" stroke-width="2"/>
+        <rect x="301" y="301" width="85" height="92" rx="22" stroke="#333" fill="none" stroke-width="2"/>
+        <rect x="101" y="301" width="85" height="92" rx="22" stroke="#333" fill="none" stroke-width="2"/>
+        <rect x="101" y="201" width="85" height="92" rx="22" stroke="#333" fill="none" stroke-width="2"/>
+        <rect x="201" y="201" width="85" height="92" rx="22" stroke="#1A12FF" fill="none" stroke-width="2"/>
+        <rect x="201" y="101" width="85" height="92" rx="22" stroke="#333" fill="none" stroke-width="2"/>
+        <rect x="301" y="201" width="185" height="92" rx="22" stroke="#333" fill="none" stroke-width="2"/>
+        <rect x="101" y="1" width="85" height="92" rx="22" stroke="#333" fill="none" stroke-width="2"/>
+        <rect x="303" y="1" width="86" height="192" rx="22" stroke="#333" fill="none" stroke-width="2"/>
+        <rect x="1" y="101" width="189" height="92" rx="22" stroke="#333" fill="none" stroke-width="2"/>
+        <rect x="1" y="301" width="85" height="92" rx="22" stroke="#333" fill="none" stroke-width="2"/>
+
+        <g class="analytics-node node-realtime">
+        <rect x="401" y="301" width="85" height="92" rx="22" fill="black" stroke="url(#g1)" stroke-width="2" />
+        <rect class="glow" x="401" y="301" width="85" height="92" rx="22" fill="none" stroke="url(#g1)" stroke-width="2" opacity="0" />
+        <svg x="431" y="335" width="24" height="24" viewBox="0 0 24 24" stroke="white" stroke-width="2" fill="none"><use href="#icon-activity"/></svg>
+        </g>
+
+        <g class="analytics-node node-insights">
+        <rect x="301" y="411" width="85" height="92" rx="22" fill="black" stroke="url(#g2)" stroke-width="2" />
+        <rect class="glow" x="301" y="411" width="85" height="92" rx="22" fill="none" stroke="url(#g2)" stroke-width="2" opacity="0" />
+        <svg x="331" y="445" width="24" height="24" viewBox="0 0 24 24" stroke="white" stroke-width="2" fill="none"><use href="#icon-bar-chart"/></svg>
+        </g>
+
+        <g class="analytics-node node-alerts">
+        <rect x="101" y="411" width="85" height="92" rx="22" fill="black" stroke="url(#g3)" stroke-width="2" />
+        <rect class="glow" x="101" y="411" width="85" height="92" rx="22" fill="none" stroke="url(#g3)" stroke-width="2" opacity="0" />
+        <svg x="131" y="445" width="24" height="24" viewBox="0 0 24 24" stroke="white" stroke-width="2" fill="none"><use href="#icon-alert-circle"/></svg>
+        </g>
+
+        <g class="analytics-node node-security">
+        <rect x="401" y="101" width="85" height="92" rx="22" fill="black" stroke="url(#g4)" stroke-width="2" />
+        <rect class="glow" x="401" y="101" width="85" height="92" rx="22" fill="none" stroke="url(#g4)" stroke-width="2" opacity="0" />
+        <svg x="431" y="135" width="24" height="24" viewBox="0 0 24 24" stroke="white" stroke-width="2" fill="none"><use href="#icon-shield-check"/></svg>
+        </g>
+
+        <g class="analytics-node node-performance">
+        <rect x="201" y="1" width="85" height="92" rx="22" fill="black" stroke="url(#g5)" stroke-width="2" />
+        <rect class="glow" x="201" y="1" width="85" height="92" rx="22" fill="none" stroke="url(#g5)" stroke-width="2" opacity="0" />
+        <svg x="231" y="35" width="24" height="24" viewBox="0 0 24 24" stroke="white" stroke-width="2" fill="none"><use href="#icon-zap"/></svg>
+        </g>
+
+        <g class="analytics-node node-growth">
+        <rect x="1" y="201" width="85" height="92" rx="22" fill="black" stroke="url(#g6)" stroke-width="2" />
+        <rect class="glow" x="1" y="201" width="85" height="92" rx="22" fill="none" stroke="url(#g6)" stroke-width="2" opacity="0" />
+        <svg x="31" y="235" width="24" height="24" viewBox="0 0 24 24" stroke="white" stroke-width="2" fill="none"><use href="#icon-trending-up" /></svg>
+        </g>
+
+        </svg>
+      </svg>
+    </div>
+</div>
+
+    <!-- RIGHT: TEXT -->
+    <div class="reveal">
+      <h2 class="text-4xl md:text-5xl font-bold leading-tight mb-6">
+        Monitor and analyze global user<br />
+        <span class="text-gradient">engagement in real time.</span> <br />
+      </h2>
+
+      <p class="text-slate-400 max-w-xl mb-10">
+        Gain real-time insights by monitoring and analyzing user engagement,
+        helping you make data-driven decisions and enhance user experiences effortlessly.
+      </p>
+
+      <a href="#"
+        class="inline-flex items-center justify-center
+               px-6 py-3 rounded-full
+               border border-white/20
+               text-sm font-medium
+               hover:bg-white hover:text-black
+               transition">
+        Learn More
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<!-- ================= FAQ ================= -->
+<section class="py-28 px-6">
+  <div class="max-w-5xl mx-auto">
+    <h2 class="text-4xl font-bold text-center mb-16 reveal">
+      Frequently asked <span class="text-blue-600">questions.</span>
+    </h2>
+
+    <div class="grid md:grid-cols-2 gap-6">
+      <div class="p-6 bg-blue-50 border border-blue-200 rounded-2xl reveal">
+        <h4 class="font-bold mb-2">What is CRM?</h4>
+        <p class="text-sm text-slate-600">
+          CRM helps manage customer relationships and sales processes.
+        </p>
+      </div>
+
+      <div class="p-6 border rounded-2xl reveal">
+        <h4 class="font-bold mb-2">Key features?</h4>
+        <p class="text-sm text-slate-600">
+          Automation, analytics, tracking and integrations.
+        </p>
+      </div>
+
+      <div class="p-6 border rounded-2xl reveal">
+        <h4 class="font-bold mb-2">How to choose?</h4>
+        <p class="text-sm text-slate-600">
+          Consider size, budget and required features.
+        </p>
+      </div>
+
+      <div class="p-6 border rounded-2xl reveal">
+        <h4 class="font-bold mb-2">Benefits?</h4>
+        <p class="text-sm text-slate-600">
+          Increased productivity and better insights.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PRICING ================= -->
+<section class="py-28 px-6 bg-white">
+  <div class="max-w-6xl mx-auto text-center">
+
+    <!-- Title -->
+    <h2 class="text-4xl font-bold mb-4 reveal">
+      Flexible plans that evolve
+      <span class="text-blue-600">with your needs.</span>
+    </h2>
+    <p class="text-slate-500 mb-16 reveal">
+      Designed to scale effortlessly as you grow.
+    </p>
+
+    <!-- Cards -->
+    <div class="grid md:grid-cols-3 gap-8 items-stretch">
+
+      <!-- BASIC -->
+      <div class="border rounded-3xl p-8 flex flex-col reveal">
+        <h3 class="font-semibold text-lg mb-1">Basic</h3>
+        <p class="text-sm text-slate-500 mb-6">
+          Affordable essentials to get you started
+        </p>
+
+        <div class="mb-6">
+          <span class="text-4xl font-bold">$99</span>
+          <span class="text-slate-500 text-sm"> /Month</span>
+        </div>
+
+        <p class="text-sm text-slate-500 mb-4">What’s you get:</p>
+
+        <ul class="space-y-3 text-sm mb-10">
+          <li class="flex gap-2 items-center">
+            <span class="text-blue-600">✔</span> Full visibility into system usage
+          </li>
+          <li class="flex gap-2 items-center">
+            <span class="text-blue-600">✔</span> Seamlessly connect
+          </li>
+          <li class="flex gap-2 items-center">
+            <span class="text-blue-600">✔</span> Personalized training sessions
+          </li>
+        </ul>
+
+        <button class="mt-auto w-full py-3 rounded-full border text-sm font-medium hover:bg-slate-50 transition">
+          Choose Plan
+        </button>
+      </div>
+
+      <!-- PRO -->
+      <div class="relative rounded-3xl p-8 flex flex-col
+                  bg-gradient-to-b from-blue-50 to-white
+                  border-2 border-blue-400
+                  shadow-xl shadow-blue-200/40
+                  scale-105 reveal">
+
+        <!-- Badge -->
+        <span class="absolute top-5 right-5 text-xs font-semibold
+                     bg-blue-500 text-white px-3 py-1 rounded-full">
+          Best Deal
+        </span>
+
+        <h3 class="font-semibold text-lg mb-1">Pro</h3>
+        <p class="text-sm text-slate-500 mb-6">
+          Advanced features for growing teams.
+        </p>
+
+        <div class="mb-6">
+          <span class="text-4xl font-bold">$139</span>
+          <span class="text-slate-500 text-sm"> /Month</span>
+        </div>
+
+        <p class="text-sm text-slate-500 mb-4">What’s you get:</p>
+
+        <ul class="space-y-3 text-sm mb-10">
+          <li class="flex gap-2 items-center">
+            <span class="text-blue-600">✔</span> Full visibility into system usage
+          </li>
+          <li class="flex gap-2 items-center">
+            <span class="text-blue-600">✔</span> Seamlessly connect
+          </li>
+          <li class="flex gap-2 items-center">
+            <span class="text-blue-600">✔</span> Personalized training sessions
+          </li>
+          <li class="flex gap-2 items-center">
+            <span class="text-blue-600">✔</span> Advanced encryption
+          </li>
+        </ul>
+
+        <button class="mt-auto w-full py-3 rounded-full
+                       bg-gradient-to-r from-blue-500 to-blue-600
+                       text-white text-sm font-semibold
+                       hover:shadow-lg hover:shadow-blue-500/40 transition">
+          Choose Plan
+        </button>
+      </div>
+
+      <!-- BUSINESS -->
+      <div class="border rounded-3xl p-8 flex flex-col reveal">
+        <h3 class="font-semibold text-lg mb-1">Business</h3>
+        <p class="text-sm text-slate-500 mb-6">
+          Full-scale solutions for enterprise success.
+        </p>
+
+        <div class="mb-6">
+          <span class="text-4xl font-bold">$199</span>
+          <span class="text-slate-500 text-sm"> /Month</span>
+        </div>
+
+        <p class="text-sm text-slate-500 mb-4">What’s you get:</p>
+
+        <ul class="space-y-3 text-sm mb-10">
+          <li class="flex gap-2 items-center">
+            <span class="text-blue-600">✔</span> Full visibility into system usage
+          </li>
+          <li class="flex gap-2 items-center">
+            <span class="text-blue-600">✔</span> Seamlessly connect
+          </li>
+          <li class="flex gap-2 items-center">
+            <span class="text-blue-600">✔</span> Personalized training sessions
+          </li>
+          <li class="flex gap-2 items-center">
+            <span class="text-blue-600">✔</span> Advanced encryption
+          </li>
+          <li class="flex gap-2 items-center">
+            <span class="text-blue-600">✔</span> Access to 24/7 assistance
+          </li>
+        </ul>
+
+        <button class="mt-auto w-full py-3 rounded-full border text-sm font-medium hover:bg-slate-50 transition">
+          Choose Plan
+        </button>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ================= TESTIMONIALS ================= -->
+<section class="py-28 px-6">
+  <div class="max-w-6xl mx-auto">
+    <h2 class="text-4xl font-bold text-center mb-16 reveal">
+      Hear directly from businesses that
+      <span class="text-blue-600">succeed with CRM.</span>
+    </h2>
+
+    <div class="grid md:grid-cols-3 gap-8">
+      <div class="p-8 border rounded-3xl reveal">
+        <p class="mb-6">“Our sales increased significantly.”</p>
+        <strong>Esther Howard</strong>
+      </div>
+
+      <div class="p-8 border rounded-3xl reveal">
+        <p class="mb-6">“We now make better decisions.”</p>
+        <strong>Robert Fox</strong>
+      </div>
+
+      <div class="p-8 border rounded-3xl reveal">
+        <p class="mb-6">“Improved collaboration across teams.”</p>
+        <strong>Jacob Jones</strong>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FINAL CTA ================= -->
+<section class="py-32 px-6 bg-black text-white text-center">
+  <h2 class="text-4xl md:text-5xl font-bold mb-10 reveal">
+    Get a free demo today and discover how CRM can
+    <span class="text-blue-400">transform your business.</span>
+  </h2>
+
+  <div class="flex justify-center gap-4 reveal">
+    <button class="px-8 py-4 rounded-full bg-white text-black font-semibold">
+      Try for free
+    </button>
+    <button class="px-8 py-4 rounded-full border border-white/30">
+      Get a demo
+    </button>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer class="bg-black text-slate-400 px-6 py-20 border-t border-slate-800">
+  <div class="max-w-7xl mx-auto grid md:grid-cols-4 gap-12">
+    <div>
+      <strong class="text-white">Folio</strong>
+      <p class="text-sm mt-4">© Folio. 2025.</p>
+    </div>
+
+    <div>
+      <h5 class="text-white mb-4">Explore</h5>
+      <ul class="space-y-2 text-sm">
+        <li>Features</li>
+        <li>FAQ</li>
+        <li>Pricing</li>
+        <li>Testimonials</li>
+      </ul>
+    </div>
+
+    <div>
+      <h5 class="text-white mb-4">Support</h5>
+      <ul class="space-y-2 text-sm">
+        <li>Help Center</li>
+        <li>Docs</li>
+      </ul>
+    </div>
+
+    <div>
+      <h5 class="text-white mb-4">Contact</h5>
+      <input class="w-full bg-slate-900 px-4 py-2 rounded-lg text-sm" placeholder="Email">
+    </div>
+  </div>
+</footer>
+
+<script>
+  lucide.createIcons();
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("show");
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll(".reveal").forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
